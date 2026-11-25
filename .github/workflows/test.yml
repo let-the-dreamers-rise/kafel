@@ -13,7 +13,10 @@ jobs:
       - name: build and test
         run: make CC=${{ matrix.cc }} && make CC=${{ matrix.cc }} test
       - name: build and test with ASan and UBSan
+        env:
+          CFLAGS: -g -fsanitize=address,undefined -fno-sanitize-recover=undefined
+          ASAN_OPTIONS: detect_leaks=0
         run: |
           make clean
-          make CC=${{ matrix.cc }} CFLAGS="-std=gnu11 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=undefined -I${PWD}/include" LDFLAGS="-fsanitize=address,undefined"
-          ASAN_OPTIONS=detect_leaks=0 make CC=${{ matrix.cc }} CFLAGS="-std=gnu11 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=undefined -I${PWD}/include" LDFLAGS="-fsanitize=address,undefined" test
+          make CC=${{ matrix.cc }}
+          make CC=${{ matrix.cc }} test
