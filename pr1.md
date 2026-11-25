@@ -60,7 +60,7 @@ The second commit treats negative 32-bit numbers (down to `INT32_MIN`) as fittin
 ### Testing
 
 - `make test`: 38/38 (35 existing + 3 new). The three new cases fail on `master` and pass here.
-- Reference comparison: random policies (conditions over 64-bit and real 32-bit arguments, up to several hundred rules, nested `USE`, multiple architectures including big-endian with `ON` guards) are compiled and run through `test/runner/interpreter.c`; a ~100-line Python evaluator of the documented semantics (first matching rule wins, unsigned compare) computes the expected action. Numbers are in the first comment. I can contribute the generator under `tools/` or `test/` in a follow-up if you would like it.
+- Reference comparison: random policies (conditions over 64-bit and real 32-bit arguments, up to several hundred rules, nested `USE`, multiple architectures including big-endian with `ON` guards) are compiled and run through `test/runner/interpreter.c`; a ~100-line Python evaluator of the documented semantics (first matching rule wins, unsigned compare) computes the expected action. On 15,000 random policies over real syscalls with 32-bit arguments, 555 disagreed with the evaluator on `master` and 0 with this change; on 20,000 one-rule policies, 233 and 0 (the mismatches are instances of the two bugs above, not separate bugs). 6,000 policies with 64-bit arguments only, 3,000 large policies with nested `USE` and 3,600 multi-architecture policies showed no further disagreement. I can contribute the generator under `tools/` or `test/` in a follow-up if you would like it.
 
 ### Not in this PR, for your judgement
 
